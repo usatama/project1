@@ -1,0 +1,3 @@
+PIC,PIC,%picpath%,%picname%,1,1,1,1,0,0,8,%xp%,%yp%,%xs%,%ys%,0,1,,ANIME/S_OUT_L,
+WAIT,19,0,
+PIC,PIC/system,body.png,chara3,1,1,1,1,0,0,1,0,0,1,1,0,0,,ANIME/COM,

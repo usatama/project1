@@ -1,0 +1,5 @@
+PIC,PIC/system,kuro.jpg,event,1,1,1,1,0,0,5,568,320,3.6,3.6,0,1,,ANIME/S_FLASH,
+WAIT,19,0
+PIC,PIC,%picpath%,%picname%,1,1,1,1,0,0,8,%xp%,%yp%,%xs%,%ys%,0,1,,ANIME/COM,
+WAIT,18,20
+PIC,PIC/system,kuro.jpg,event,1,1,1,1,0,0,5,568,320,3.6,3.6,0,0,,ANIME/COM,

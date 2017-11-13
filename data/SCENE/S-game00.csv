@@ -1,0 +1,168 @@
+LABEL,#SATRT#
+REM,///// ADVのVIEW読込 /////
+SHOW,bkgnd,MAP,facebk,chara1,chara2,chara3,event,window,card1,card2,card3,carde,TXT,puth,point,
+SET,TXT_VH,'H'
+SET,TXT_X,280
+SET,TXT_Y,460
+SET,TXT_Y_SPACE,10
+SET,TXT_FONT,30px pixel
+PIC,PIC/system,puth.png,puth,8,3,1,1,0,0,9,1006,618,1,1,0,1,,ANIME/PUTH,
+PIC,PIC/system,window.png,window,1,1,1,1,0,0,8,648,630,1.2,1.2,0,0.9,,ANIME/COM,
+PIC,PIC/system,face_back.png,facebk,1,1,1,1,0,0,7,10,630,1.5,1.5,0,0.9,,ANIME/COM,
+PIC,PIC/system,TXT.png,TXT,1,1,1,1,0,0,1,0,0,1,1,0,1,,ANIME/COM,
+PIC,PIC/system,point.png,point,8,1,1,1,0,0,5,0,0,2,2,0,1,,ANIME/POINT,
+REM,///// MAP表示 /////
+PIC,PIC/mapchip,map00.png,MAP0,1,1,1,1,0,0,1,0,0,1,1,0,1,,ANIME/COM,
+PIC,PIC/system,MAP.png,MAP,1,1,1,1,0,0,1,0,0,3,3,0,1,,ANIME/COM,
+MAP,MAP/TEST
+REM,///// 変数初期化 /////
+SET,ZYANKEN_WIN,0,
+SET,ZYANKEN_LOS,0,
+SET,ZYANKEN_PL,0,
+REM,///// ゲーム再開 ////////////////////////////////////////////////////////////
+LABEL,#KAISI
+REM,///// CHARA表示 /////
+PIC,PIC/chara,ooku.png,chara1,3,1,1,1,0,0,5,130,500,2,2,0,1,,ANIME/WALK,
+PIC,PIC/chara,kurimuzon.png,chara2,3,1,1,1,0,0,5,600,140,2,2,0,1,,ANIME/WALK,
+PIC,PIC/sample,card.png,card1,3,1,1,1,0,0,5,400,350,2,2,0,1,,ANIME/COM,
+PIC,PIC/sample,card.png,card2,3,1,1,1,1,0,5,600,350,2,2,0,1,,ANIME/COM,
+PIC,PIC/sample,card.png,card3,3,1,1,1,2,0,5,800,350,2,2,0,1,,ANIME/COM,
+PIC,PIC/sample,card.png,carde,3,1,1,1,0,0,5,600,50,1,1,0,1,,ANIME/WALK,
+REM,///// 変数設定 /////
+EXEJ,oVal['ZYANKEN_CM']=Math.floor(Math.random()*3);,
+REM,///// 文字表示 /////
+TXT,,\
+【オーク】,\
+「出す手を選んでください」,\
+merge(（勝：|GET(ZYANKEN_WIN)|　負：|GET(ZYANKEN_LOS)|）)
+REM,///// 入力設定 /////
+TOUCH,,CLR,,,,,,,,,,,,,,
+TOUCH,GOTO(|#GOO)	,SQRT,,,,,card1,1.3,,,,,,,,
+TOUCH,GOTO(|#TYOKI)	,SQRT,,,,,card2,1.3,,,,,,,,,
+TOUCH,GOTO(|#PAA)	,SQRT,,,,,card3,1.3,,,,,,,,,
+TOUCH,GOTO(|#GOO)	,KEYZ,,,,,,,,,,,,,,
+TOUCH,GOTO(|#TYOKI)	,KEYX,,,,,,,,,,,,,,,
+TOUCH,GOTO(|#PAA)	,KEYC,,,,,,,,,,,,,,,
+
+
+
+
+LABEL,#GOO
+SET,ZYANKEN_PL,0,
+GOTO,,#TYUKAN
+
+LABEL,#TYOKI
+SET,ZYANKEN_PL,1,
+GOTO,,#TYUKAN
+
+LABEL,#PAA
+SET,ZYANKEN_PL,2,
+GOTO,,#TYUKAN
+
+
+
+LABEL,#TYUKAN
+TOUCH,,CLR,,,,,,,,,,,,,,
+TXT,,,ジャン,,,,,,,,,,,
+WAIT,10,,
+TXT,,,ケン,,,,,,,,,,,
+WAIT,10,,
+TXT,,,ポン,,,,,,,,,,,
+WAIT,10,,
+GOTO,,#HANTEI0
+
+
+
+LABEL,#HANTEI0
+IF,ZYANKEN_PL,=,0
+	PIC,PIC/sample,card.png,card1,3,1,1,1,0,0,5,400,300,2,2,0,1,,ANIME/COM,
+	IF,ZYANKEN_CM,=,0
+		PIC,PIC/sample,card.png,carde,3,1,1,1,0,0,5,600,200,1,1,0,1,,ANIME/COM,
+		GOTO,,#AIKO
+	ELSEIF,ZYANKEN_CM,=,1
+		PIC,PIC/sample,card.png,carde,3,1,1,1,1,0,5,600,200,1,1,0,1,,ANIME/COM,
+		GOTO,,#KATI
+	ELSEIF,ZYANKEN_CM,=,2
+		PIC,PIC/sample,card.png,carde,3,1,1,1,2,0,5,600,200,1,1,0,1,,ANIME/COM,
+		GOTO,,#MAKE
+	ENDIF
+ELSEIF,ZYANKEN_PL,=,1
+	PIC,PIC/sample,card.png,card2,3,1,1,1,1,0,5,600,300,2,2,0,1,,ANIME/COM,
+	IF,ZYANKEN_CM,=,0
+		PIC,PIC/sample,card.png,carde,3,1,1,1,0,0,5,600,200,1,1,0,1,,ANIME/COM,
+		GOTO,,#MAKE
+	ELSEIF,ZYANKEN_CM,=,1
+		PIC,PIC/sample,card.png,carde,3,1,1,1,1,0,5,600,200,1,1,0,1,,ANIME/COM,
+		GOTO,,#AIKO
+	ELSEIF,ZYANKEN_CM,=,2
+		PIC,PIC/sample,card.png,carde,3,1,1,1,2,0,5,600,200,1,1,0,1,,ANIME/COM,
+		GOTO,,#KATI
+	ENDIF
+ELSEIF,ZYANKEN_PL,=,2
+	PIC,PIC/sample,card.png,card3,3,1,1,1,2,0,5,800,300,2,2,0,1,,ANIME/COM,
+	IF,ZYANKEN_CM,=,0
+		PIC,PIC/sample,card.png,carde,3,1,1,1,0,0,5,600,200,1,1,0,1,,ANIME/COM,
+		GOTO,,#KATI
+	ELSEIF,ZYANKEN_CM,=,1
+		PIC,PIC/sample,card.png,carde,3,1,1,1,1,0,5,600,200,1,1,0,1,,ANIME/COM,
+		GOTO,,#MAKE
+	ELSEIF,ZYANKEN_CM,=,2
+		PIC,PIC/sample,card.png,carde,3,1,1,1,2,0,5,600,200,1,1,0,1,,ANIME/COM,
+		GOTO,,#AIKO
+	ENDIF,,,
+ELSE
+	GOTO,,#ERR
+ENDIF
+
+
+
+LABEL,#KATI
+UPD,ZYANKEN_WIN,+=,1,
+TXT,,,あなたの勝ちです,,,,,,,,,,,
+WAIT,60,
+GOTO,,#KAISI
+
+LABEL,#MAKE
+UPD,ZYANKEN_LOS,+=,1,
+TXT,,,あなたの負けです,,,,,,,,,,,
+WAIT,60,
+GOTO,,#KAISI
+
+LABEL,#AIKO
+TXT,,,あいこです,,,,,,,,,,,
+WAIT,60,
+GOTO,,#KAISI
+
+
+
+REM,////////////////////////////////////////////////////////////
+
+LABEL,#ERR
+TOUCH,,CLR,,,,,,,,,,,,,,
+TOUCH,NEXT(),BOX,0,0,1200,800,,,,,,,,,,
+TXT,,,,,エラーです,,,,,,,,,,,
+
+
+FOR,TEST,=,1,TEST,<,3,TEST,+=,1,
+	TXT,,,,GET(TEST),GET(TEST2)
+	WAIT,60,
+	FOR,TEST2,=,1,TEST2,<,6,TEST2,+=,1,
+		TXT,,,,GET(TEST),GET(TEST2)
+		WAIT,60,
+	ENDFOR
+ENDFOR
+
+
+EXEJ,oVal['TEST']=padding(123,10);,
+
+
+LIB,chr,1
+merge(GET(CHRNO)|　|GET(CHRNM)|　|GET(CHRSEX)|　|GET(CHRAGE)|　|GET(CHRRACE))
+
+
+VIDEO,PLAY,MOVE/op
+WAIT,120,
+VIDEO,END
+
+
+END

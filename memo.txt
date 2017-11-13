@@ -1,0 +1,52 @@
+reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Console\TrueTypeFont" /v "0." /t "REG_SZ" /d "MS Gothic"
+管理者で実行すること
+
+
+cd /d C:\data\html5_ver0.10
+for /r /d %i in (*) do ren %i\*.JPG *.JQG
+for /r /d %i in (*) do ren %i\*.PNG *.PMG
+cd /d C:\data\html5_ver0.10\data\SCENE
+for %i in (*.CSV) do replace.bat %i JPG JQG
+for %i in (*.CSV) do replace.bat %i PNG PMG
+
+
+
+cd /d C:\data\html5_ver0.10
+for /r /d %i in (*) do ren %i\*.JQG *.JPG
+for /r /d %i in (*) do ren %i\*.PMG *.PNG
+cd /d C:\data\html5_ver0.10\data\SCENE
+for %i in (*.CSV) do replace.bat %i JQG JPG
+for %i in (*.CSV) do replace.bat %i PMG PNG
+
+
+cd /d D:\TEST_LAB\game_ehtml5\data\JS
+for %i in (*.JS) do replace.bat %i console //console
+
+
+
+
+■列の差し替え
+^PIC,([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*)
+          \1,     \2,     \3,     \4,     \5,     \6,     \7,     \8,     \9,    \10,    \11,    \12,    \13,    \14,    \15,    \16    \17,    \18
+PIC,\1,\2,\3,\4,\5,\6,\7,\8,\9,\10,\11,\12,\13,\14,\15,\16,\17,\18
+PIC,\1,\2,\3,\4,\5,\6,\7,\16,\17,\8,\9,\10,\11,\12,\13,\14,\15,\18
+
+
+%文字の置き換え
+/パス構成
+:ファイル保存時連結
+,データの区切り
+|関数内のデータの区切り
+
+
+
+/*		
+		for ( var key in playList ) {
+			var data = playList[key];
+			playList[key]
+			key = evalTxt(key);
+		}
+		
+*/		
+		
+		
