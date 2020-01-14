@@ -12,7 +12,6 @@ function TXTA(){
 	// 内部変数の宣言 --------------------------------
 	var iTxtMax = 0;
 	var iTxtShowMax = 0;
-	var fTxtShow = false;
 	var fTxtUpdate  = true;
 	var sTxtEnc = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
 	var sTxt  = new Array;
@@ -22,6 +21,7 @@ function TXTA(){
 	//------------------------------------------------
 	this.init = function() {
 		oFunc["SET"].SET("TXTA_RAWNUM" , "15");
+		oFunc["SET"].SET("TXTA_ANIME"  , true);
 	}
 	this.init();
 
@@ -56,7 +56,6 @@ function TXTA(){
 
 		iTxtMax = 1;
 		iTxtShowMax = 0;
-		fTxtShow=false;
 
 		var tmp ="";
 		var tmp2 ="";
@@ -65,7 +64,7 @@ function TXTA(){
 		for(var i=0;i<16;i++){
 			if(!isBlk(playList.txt[i])){
 				sTxt[cnt]="";
-				tmp2 = this.encTxt(true,playList.txt[i]);
+				tmp2 = this.encTxt(true,evalTxt(playList.txt[i]));
 				for(var j=0; j<tmp2.length; j++){
 					sTxt[cnt] += replaceAll(tmp2.charAt(j),';',',');
 					if(j%max==(max-1)){
@@ -96,49 +95,47 @@ function TXTA(){
 	//------------------------------------------------
 	this.exe = function() {
 		var ct = oFunc["canvas"].getCt();
+		var anime = oFunc["GET"].GET("TXTA_ANIME");
 
-		if(fTxtShow){
-			ct.save();
-			ct.font          = oFunc["GET"].GET("TXT_FONT");
-			ct.fillStyle     = oFunc["GET"].GET("TXT_T_COLOR");
-			ct.textAlign     = oFunc["GET"].GET("TXT_ALIGN");
-			ct.textBaseline  = oFunc["GET"].GET("TXT_BASEL");
-			ct.shadowColor   = oFunc["GET"].GET("TXT_S_COLOR");
-			ct.shadowBlur    = 2;
-			ct.shadowOffsetX = 1;
-			ct.shadowOffsetY = 1;
-			ct.globalAlpha   = 1;
-			ct.globalCompositeOperation ="source-over";
-			ct.setTransform(1, 0, 0, 1, 0, 0);
+		ct.save();
+		ct.font          = oFunc["GET"].GET("TXT_FONT");
+		ct.fillStyle     = oFunc["GET"].GET("TXT_T_COLOR");
+		ct.textAlign     = oFunc["GET"].GET("TXT_ALIGN");
+		ct.textBaseline  = oFunc["GET"].GET("TXT_BASEL");
+		ct.shadowColor   = oFunc["GET"].GET("TXT_S_COLOR");
+		ct.shadowBlur    = 2;
+		ct.shadowOffsetX = 1;
+		ct.shadowOffsetY = 1;
+		ct.globalAlpha   = 1;
+		ct.globalCompositeOperation ="source-over";
+		ct.setTransform(1, 0, 0, 1, 0, 0);
 
-			var x = oFunc["GET"].GET("TXT_X");
-			var y = oFunc["GET"].GET("TXT_Y");
-			var h = ct.measureText("あ").width;
-			var w = oFunc["GET"].GET("TXT_Y_SPACE") ;
+		var x = oFunc["GET"].GET("TXT_X");
+		var y = oFunc["GET"].GET("TXT_Y");
+		var h = ct.measureText("あ").width;
+		var w = oFunc["GET"].GET("TXT_Y_SPACE") ;
 
-			if(iTxtMax<iTxtShowMax){
-				var iTxtNum = 0;
-				for(var i=0;i<sTxt.length;i++){
-					var sTxtShow=""
-					for(var j=0; j<sTxt[i].length; j++){
-						sTxtShow += sTxt[i].charAt(j);
-						if(iTxtNum>iTxtMax){ break; }
-						iTxtNum++;
-					}
-					ct.fillText( sTxtShow, x, y+(h+w)*i );
+		if( iTxtMax<iTxtShowMax && anime==true ){
+			var iTxtNum = 0;
+			for(var i=0;i<sTxt.length;i++){
+				var sTxtShow=""
+				for(var j=0; j<sTxt[i].length; j++){
+					sTxtShow += sTxt[i].charAt(j);
 					if(iTxtNum>iTxtMax){ break; }
+					iTxtNum++;
 				}
-				iTxtMax++;
-			}else{
-				for(var i=0;i<sTxt.length;i++){
-					ct.fillText( sTxt[i], x, y+(h+w)*i );
-				}
+				ct.fillText( sTxtShow, x, y+(h+w)*i );
+				if(iTxtNum>iTxtMax){ break; }
 			}
-
-			ct.restore();
+			iTxtMax++;
 		}else{
-			fTxtShow=true;
+			for(var i=0;i<sTxt.length;i++){
+				ct.fillText( sTxt[i], x, y+(h+w)*i );
+			}
 		}
+
+		ct.restore();
+
 	}
 	//------------------------------------------------
 	//------------------------------------------------
@@ -155,6 +152,9 @@ function TXTA(){
 		tmp += oFunc["GET"].GET("TXT_X")       + ":";
 		tmp += oFunc["GET"].GET("TXT_Y")       + ":";
 		tmp += oFunc["GET"].GET("TXT_Y_SPACE") + ":";
+		
+		tmp += oFunc["GET"].GET("TXTA_RAWNUM") + ":";
+		tmp += oFunc["GET"].GET("TXTA_ANIME")  + ":";
 		
 		oFunc["SET"].SET("TXTA_LIST" , tmp);
 		oFunc["SET"].SET("TXTA_STR"  , txt);
@@ -196,5 +196,15 @@ function TXTA(){
 		}
 		return enc;
 	}
+	//------------------------------------------------
+	this.getTxtMax = function() {
+		return iTxtMax;
+	}
+	//------------------------------------------------
+	//------------------------------------------------
+	this.getTxtShowMax = function() {
+		return iTxtShowMax;
+	}
+	//------------------------------------------------
 	// END -------------------------------------------
 }

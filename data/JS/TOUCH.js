@@ -1,9 +1,11 @@
-/**
+/** 
  * TOUCH.js
  * 
  * @version : 1.0
  * @license : Copyright (c) 2012-2015 Usatama
  *            Released under the MIT license
+ * ref:
+ * https://qiita.com/yukiTTT/items/773356c2483b96c9d4e0
  */
 
 function TOUCH(){
@@ -24,6 +26,8 @@ function TOUCH(){
 	var iKeyZ      = 0;
 	var iKeyX      = 0;
 	var iKeyC      = 0;
+	var iAnyKey    = 0;
+	var sAnyKey    = "";
 	var oTouchList;
 
 	//------------------------------------------------
@@ -43,7 +47,8 @@ function TOUCH(){
 		oFunc["canvas"].getCv().addEventListener("DOMMouseScroll",mouseWheelListner  ,false);
 		document.addEventListener("keydown"       ,keydownListner     ,false);
 		document.addEventListener("keyup"         ,keyupListner       ,false);
-
+		document.addEventListener("touchmove"     ,handleTouchMove    ,{ passive: false });
+		//window.addEventListener("orientationchange resize", oFunc["screen"].screen(),false );
 		//SAVE用
 		oFunc["SET"].SET("TOUCH_LIST", "");
 		oFunc["SET"].SET("TOUCH_MAX", 0);
@@ -68,6 +73,8 @@ function TOUCH(){
 		iKeyZ      = 0;
 		iKeyX      = 0;
 		iKeyC      = 0;
+		iAnyKey    = 0;
+		sAnyKey    = "";
 	}
 
 	//------------------------------------------------
@@ -231,8 +238,10 @@ function TOUCH(){
 				|| (oTouch.mode == "KEYZ"     && iKeyZ     == 2)
 				|| (oTouch.mode == "KEYX"     && iKeyX     == 2)
 				|| (oTouch.mode == "KEYC"     && iKeyC     == 2)
+				|| (oTouch.mode == "ANYKEY"   && iAnyKey   == 2)
 				){
 
+				//alert(oTouch.funcNm);
 				//実行
 				evalTxt(oTouch.funcNm);
 				iKeyLEFT   = 0;
@@ -242,6 +251,9 @@ function TOUCH(){
 				iKeyZ      = 0;
 				iKeyX      = 0;
 				iKeyC      = 0;
+				iAnyKey    = 0;
+				oFunc["SET"].SET("TOUCH_ANYKEY", blk(sAnyKey,"?"));
+				sAnyKey    = "";
 				break;
 			}
 		}
@@ -286,6 +298,12 @@ function TOUCH(){
 		return sTouchAria;
 	}
 
+	//------------------------------------------------
+	//------------------------------------------------
+	this.getAnyKey = function() {
+		return sAnyKey;
+	}
+
 	//////////////////////////////////////////////////
 	// 入力関連処理
 	//////////////////////////////////////////////////
@@ -295,50 +313,54 @@ function TOUCH(){
 		}
 	}
 	function mouseDownListner(e) {
-		fMousePush = true;
 		adjustXY(e);
+		fMousePush = true;
 	}
 	function mouseUpListner(e) {
-		fMousePush = false;
 		adjustXY(e);
+		fMousePush = false;
 		oFunc["AUDIO"].preLoad();
 	}
 	function mouseOutListner(e) {
+		//adjustXY(e);
 		fMousePush = false;
 	}
 	function adjustXY(e) {
 		if(e.touches != undefined){
 			var rect = e.target.getBoundingClientRect();
-			if(e.touches.length>0){
+			if(e.touches.length > 0){
 				var touh = e.targetTouches[0];
-				if(oFunc["screen"].getDeg()){
-					iMouseX = Math.floor(touh.clientX*oFunc["screen"].getZoom() - rect.right*oFunc["screen"].getZoom());
+				if( oFunc["screen"].getDeg() == true ){
+					iMouseY = Math.floor(touh.clientX*oFunc["screen"].getZoom() - rect.right*oFunc["screen"].getZoom()) * -1;
+					iMouseX = Math.floor(touh.clientY*oFunc["screen"].getZoom() - rect.top*oFunc["screen"].getZoom());
+				}else{
+					iMouseX = Math.floor(touh.clientX*oFunc["screen"].getZoom() - rect.left*oFunc["screen"].getZoom());
+					iMouseY = Math.floor(touh.clientY*oFunc["screen"].getZoom() - rect.top*oFunc["screen"].getZoom());
+				}
+			}
+/*			if(e.touches.length > 1){
+				var touh = e.targetTouches[1];
+				if( oFunc["screen"].getDeg() == true ){
+					iMouseX = Math.floor(touh.clientX*oFunc["screen"].getZoom() - rect.right*oFunc["screen"].getZoom()) * -1;
 				}else{
 					iMouseX = Math.floor(touh.clientX*oFunc["screen"].getZoom() - rect.left*oFunc["screen"].getZoom());
 				}
 				iMouseY = Math.floor(touh.clientY*oFunc["screen"].getZoom() - rect.top*oFunc["screen"].getZoom());
 			}
-/*			if(e.touches.length>1){
-				var touh = e.targetTouches[1];
-				iMouseX = Math.floor(touh.clientX*oFunc["screen"].getZoom());
-				iMouseY = Math.floor(touh.clientY*oFunc["screen"].getZoom());
-			}
 */
 		}else{
 			var rect = e.target.getBoundingClientRect();
-			if(oFunc["screen"].getDeg()){
-				iMouseX = Math.floor(e.clientX*oFunc["screen"].getZoom() - rect.right*oFunc["screen"].getZoom()) * -1;
+			if( oFunc["screen"].getDeg() == true ){
+				iMouseY = Math.floor(e.clientX*oFunc["screen"].getZoom() - rect.right*oFunc["screen"].getZoom()) * -1;
+				iMouseX = Math.floor(e.clientY*oFunc["screen"].getZoom() - rect.top*oFunc["screen"].getZoom());
 			}else{
 				iMouseX = Math.floor(e.clientX*oFunc["screen"].getZoom() - rect.left*oFunc["screen"].getZoom());
+				iMouseY = Math.floor(e.clientY*oFunc["screen"].getZoom() - rect.top*oFunc["screen"].getZoom());
 			}
-			iMouseY = Math.floor(e.clientY*oFunc["screen"].getZoom() - rect.top*oFunc["screen"].getZoom());
+
 		}
-		if(oFunc["screen"].getDeg()){
-			var tmp = iMouseX;
-			iMouseX = iMouseY;
-			iMouseY = tmp;
-		}
-		console.log(iMouseX + "," + iMouseY);
+		//console.log(iMouseX + "," + iMouseY);
+		oFunc["SET"].SET("DEBUG", iMouseX + "," + iMouseY);
 	}
 	function mouseWheelListner(e) {
 		//alert(e.detail +" "+ e.wheelDelta);
@@ -357,6 +379,11 @@ function TOUCH(){
 			if( e.keyCode == 90 ) iKeyZ      = 1;
 			if( e.keyCode == 88 ) iKeyX      = 1;
 			if( e.keyCode == 67 ) iKeyC      = 1;
+			if( e.keyCode >= 48 && e.keyCode <= 57 ) iAnyKey = 1;
+			if( e.keyCode >= 65 && e.keyCode <= 90 ) iAnyKey = 1;
+			if( e.keyCode == 13 ) iAnyKey = 1;
+			//32 space 190 . 13 return
+			//alert(e.keyCode);
 		}
 	}
 	function keyupListner(e) {
@@ -368,7 +395,16 @@ function TOUCH(){
 			if( e.keyCode == 90 && iKeyZ     == 1 ) iKeyZ      = 2;
 			if( e.keyCode == 88 && iKeyX     == 1 ) iKeyX      = 2;
 			if( e.keyCode == 67 && iKeyC     == 1 ) iKeyC      = 2;
+			if( e.keyCode >= 48 && e.keyCode <= 57 && iAnyKey   == 1 ) {
+				sAnyKey = String.fromCharCode(e.keyCode); iAnyKey    = 2; }
+			if( e.keyCode >= 65 && e.keyCode <= 90 && iAnyKey   == 1 ) {
+				sAnyKey = String.fromCharCode(e.keyCode); iAnyKey    = 2; }
+			if( e.keyCode == 13  && iAnyKey   == 1 ) {
+				sAnyKey = String.fromCharCode(e.keyCode); iAnyKey    = 2; }
 		}
+	}
+	function handleTouchMove(e) {
+		e.preventDefault();
 	}
 	// END -------------------------------------------
 }

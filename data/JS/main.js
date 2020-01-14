@@ -10,10 +10,11 @@
 	var oFunc     = new Array;
 	var sPlayFunc = ["REM","END","SET","SAVE","LOAD","CSV","LIB","ANIME","EXEC","EXEJ","GOTO","GOSUB","ENDSUB",
 					 "LABEL","SHOW","VIDEO","PIC","MAP","DEL","GET","IF","ELSEIF","ELSE","ENDIF","FOR","ENDFOR",
-					 "UPD","INPUT","AUDIO","TOUCH","WAIT","TXT","TXTA","SPK","REC","CHARA"];
-	var sUseFunc  = ["play","xml","canvas","loading","screen","next","auto","back","db","texture","reload","pop","merge"];
+					 "UPD","INPUT","AUDIO","TOUCH","WAIT","TXT","TXTA","SPK","CHARA"];
+//,"REC"
+	var sUseFunc  = ["play","xml","canvas","loading","screen","next","auto","back","db","texture","reload","pop",
+					 "merge","plural"];
 	sUseFunc = sUseFunc.concat(sPlayFunc);
-
 	var iLdEnd = 0;
 
 	var oVal = new Array;

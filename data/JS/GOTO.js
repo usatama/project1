@@ -91,6 +91,7 @@ function GOTO(){
 			}
 
 			sLabelNm = "";
+			oFunc["IF"].resetEndIf();
 			console.log(' read GOTO LABEL');
 		}else if(iLoadCnt > 0){
 			//＠のちにLOADに移す
@@ -138,6 +139,8 @@ function GOTO(){
 			oFunc["SET"].SET("TXT_X"      , tmpList1[7]);
 			oFunc["SET"].SET("TXT_Y"      , tmpList1[8]);
 			oFunc["SET"].SET("TXT_Y_SPACE", tmpList1[9]);
+			oFunc["SET"].SET("TXTA_RAWNUM", tmpList1[10]);
+			oFunc["SET"].SET("TXTA_ANIME" , tmpList1[11]);
 			oFunc["TXTA"].read({mode : sMode , txt : tmpList2});
 
 			//SHOW

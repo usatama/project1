@@ -10,7 +10,6 @@ function CHARA(){
 
 	// 内部変数の宣言 --------------------------------
 	var sLine  = new Array();
-	var sChara = new Array();
 	var sChaNm = "";
 
 	//------------------------------------------------
@@ -37,14 +36,6 @@ function CHARA(){
 		sLine["B技１"] =27;			//キャラBODY　技１
 		sLine["B技２"] =28;			//キャラBODY　技２
 		sLine["B技３"] =29;			//キャラBODY　技３
-		sChara["フェリオ_F1普"]="C0000";	//キャラ
-		sChara["フェリオ_F1照"]="C0001";	//キャラ
-		sChara["フェリオ_F1裸"]="C0002";	//キャラ
-		sChara["フェリオ_F2普"]="C0003";	//キャラ
-		sChara["フェリオ_F2照"]="C0004";	//キャラ
-		sChara["フェリオ_F2裸"]="C0005";	//キャラ
-		sChara["フェリオ_B1普"]="C0010";	//キャラ
-		sChara["フェリオ_B2普"]="C0011";	//キャラ
 	}
 	this.init();
 
@@ -61,12 +52,7 @@ function CHARA(){
 
 		//@@@@@多重読み込みしているため改善が必要！！！
 		//CHARA
-		var chara = "";
-		if(typeof sChara[colData[1]] != "undefined"){
-			chara = "CHARA/" + sChara[colData[1]];
-		}else{
-			console.warn('  warn CHARA chara: ' + line );
-		}
+		chara = "CHARA/" + colData[1];
 		
 		this.CHARA( oFunc["CSV"].loadCsv(chara) , colData[2] );
 

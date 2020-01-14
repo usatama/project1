@@ -81,7 +81,7 @@ function PIC(){
 			try{
 				hImage[iLdCnt] = new Image();
 				hImage[iLdCnt].onload   = function() {iLdEnd++;};
-				hImage[iLdCnt].onerror  = function() {alert("picloaderr: "+path);}
+				hImage[iLdCnt].onerror  = function() {location.reload(true);/*alert("picloaderr: "+path);*/}
 				hImage[iLdCnt].src      = path;
 				hImage[iLdCnt].path     = path;
 				hImage[iLdCnt].charaName= blk(colData[1],"");

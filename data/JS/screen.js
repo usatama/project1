@@ -16,7 +16,6 @@ function screen(){
 	// （共通）ファンクション生成時、初期化処理
 	//------------------------------------------------
 	this.init = function() {
-
 		var zoom
 		var wt
 		var wi
@@ -26,6 +25,8 @@ function screen(){
 		var hi
 		var ho
 		var hc
+		var cvw
+		var cvh
 
 		wi = window.innerWidth
 		wo = window.outerWidth
@@ -35,6 +36,9 @@ function screen(){
 		ho = window.outerHeight
 		hc = document.body.clientHeight
 
+		cvw = 1136.0
+		cvh = 640.0
+
 		if( (wi != 0)&&((wi <= wo)||(wo == 0)) ){wt = wi}
 		if( (wo != 0)&&((wi >= wo)||(wi == 0)) ){wt = wo}
 		if( (wo == 0)&&(wi == 0) ){wt = wc}
@@ -43,35 +47,40 @@ function screen(){
 		if( (ho != 0)&&((hi >= ho)||(hi == 0)) ){ht = ho}
 		if( (ho == 0)&&(hi == 0) ){ht = hc}
 
-		if((wt/1136) <= (ht/640)){
-			zoom = wt / wc;
-			if(wt == wc){zoom = wt / 1136.0}
+		if(wt >= ht){
+
+			if((wt/cvw) <= (ht/cvh)){
+				zoom = wt / wc;
+				if(wt == wc){zoom = wt / cvw}
+			}else{
+				zoom = ht / hc;
+				if(ht == hc){zoom = ht / cvh}
+			}
+			document.body.style.transform       ='scale('+zoom+') rotate( 0deg ) translate('+((document.body.clientWidth-window.innerWidth)/zoom/-2)+'px,'+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px)';
+			document.body.style.webkitTransform ='scale('+zoom+') rotate( 0deg ) translate('+((document.body.clientWidth-window.innerWidth)/zoom/-2)+'px,'+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px)';
+			document.body.style.MozTransform    ='scale('+zoom+') rotate( 0deg ) translate('+((document.body.clientWidth-window.innerWidth)/zoom/-2)+'px,'+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px)';
+			document.body.style.msTransform     ='scale('+zoom+') rotate( 0deg ) translate('+((document.body.clientWidth-window.innerWidth)/zoom/-2)+'px,'+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px)';
+			document.body.style.OTransform      ='scale('+zoom+') rotate( 0deg ) translate('+((document.body.clientWidth-window.innerWidth)/zoom/-2)+'px,'+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px)';
+			iZoom = 1.0/zoom
+			fDeg=false;
+
 		}else{
-			zoom = ht / hc;
-			if(ht == hc){zoom = ht / 640.0}
-		}
 
-		document.body.style.transform       ='scale('+zoom+') rotate( 0deg ) translate('+((document.body.clientWidth-window.innerWidth)/zoom/-2)+'px,'+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px)';
-		document.body.style.webkitTransform ='scale('+zoom+') rotate( 0deg ) translate('+((document.body.clientWidth-window.innerWidth)/zoom/-2)+'px,'+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px)';
-		document.body.style.MozTransform    ='scale('+zoom+') rotate( 0deg ) translate('+((document.body.clientWidth-window.innerWidth)/zoom/-2)+'px,'+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px)';
-		document.body.style.msTransform     ='scale('+zoom+') rotate( 0deg ) translate('+((document.body.clientWidth-window.innerWidth)/zoom/-2)+'px,'+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px)';
-		document.body.style.OTransform      ='scale('+zoom+') rotate( 0deg ) translate('+((document.body.clientWidth-window.innerWidth)/zoom/-2)+'px,'+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px)';
-		iZoom = 1.0/zoom
-		fDeg=false;
-
-//		if(wt >= ht){
-/*		}else{
-			zoom = ht / hc;
-			if(ht == hc){zoom = ht / 1136.0}
-			document.body.style.transform       ='scale('+zoom+') rotate( 90deg ) translate('+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px,'+((document.body.clientWidth-window.innerWidth)/zoom/2)+'px)';
-			document.body.style.webkitTransform ='scale('+zoom+') rotate( 90deg ) translate('+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px,'+((document.body.clientWidth-window.innerWidth)/zoom/2)+'px)';
-			document.body.style.MozTransform    ='scale('+zoom+') rotate( 90deg ) translate('+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px,'+((document.body.clientWidth-window.innerWidth)/zoom/2)+'px)';
-			document.body.style.msTransform     ='scale('+zoom+') rotate( 90deg ) translate('+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px,'+((document.body.clientWidth-window.innerWidth)/zoom/2)+'px)';
-			document.body.style.OTransform      ='scale('+zoom+') rotate( 90deg ) translate('+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px,'+((document.body.clientWidth-window.innerWidth)/zoom/2)+'px)';
+			if((wt/cvh) <= (ht/cvw)){
+				zoom = wt / hc;
+				if(ht == hc){zoom = wt / cvh}
+			}else{
+				zoom = ht / wc;
+				if(wt == wc){zoom = ht / cvw}
+			}
+			document.body.style.transform       ='scale('+zoom+') rotate( 90deg ) translate('+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px,'+((document.body.clientWidth-window.innerWidth+10)/zoom/2)+'px)';
+			document.body.style.webkitTransform ='scale('+zoom+') rotate( 90deg ) translate('+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px,'+((document.body.clientWidth-window.innerWidth+10)/zoom/2)+'px)';
+			document.body.style.MozTransform    ='scale('+zoom+') rotate( 90deg ) translate('+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px,'+((document.body.clientWidth-window.innerWidth+10)/zoom/2)+'px)';
+			document.body.style.msTransform     ='scale('+zoom+') rotate( 90deg ) translate('+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px,'+((document.body.clientWidth-window.innerWidth+10)/zoom/2)+'px)';
+			document.body.style.OTransform      ='scale('+zoom+') rotate( 90deg ) translate('+((document.body.clientHeight-window.innerHeight)/zoom/-2)+'px,'+((document.body.clientWidth-window.innerWidth+10)/zoom/2)+'px)';
 			iZoom = 1.0/zoom
 			fDeg=true;
 		}
-*/
 	}
 	this.init();
 
